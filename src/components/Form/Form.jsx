@@ -10,9 +10,9 @@ function Form() {
         <Label>Filter prefix:</Label>
         <Input />
       </div>
-      <div>
+      <div className="flex justify-between">
         <textarea />
-        <div>
+        <div className="flex flex-col items-end">
           <div>
             <Label>Name:</Label>
             <Input />
@@ -23,7 +23,7 @@ function Form() {
           </div>
         </div>
       </div>
-      <div>
+      <div className="flex justify-start gap-4">
         <button>Create</button>
         <button>Update</button>
         <button>Delete</button>
