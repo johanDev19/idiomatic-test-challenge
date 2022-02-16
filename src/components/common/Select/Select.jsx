@@ -1,13 +1,17 @@
 import classNames from "classnames";
 import styles from "./select.module.css";
 
-function Select({ children, className, multiple }) {
+function Select({ className, multiple, options }) {
   return (
     <select
       multiple={multiple}
       className={classNames(styles.select, className)}
     >
-      {children}
+      {options.map((option) => (
+        <option key={option.id} value={option.value}>
+          {option.label}
+        </option>
+      ))}
     </select>
   );
 }

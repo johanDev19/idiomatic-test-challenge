@@ -17,6 +17,7 @@ function Form() {
   const [canCreate, setCanCreate] = useState(false);
   const [name, setName] = useState("");
   const [surname, setSurName] = useState("");
+  const [list, setList] = useState([]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -24,17 +25,46 @@ function Form() {
       setName(value);
 
       if (value.length > 0) {
-        setCanUpdate(true);
-        setCanDelete(true);
-        setCanCreate(true);
+        enableAllButtons();
       } else {
-        setCanUpdate(false);
-        setCanDelete(false);
-        setCanCreate(false);
+        disableAllButtons();
       }
     } else if (name === SURNAME) {
       setSurName(value);
     }
+  };
+
+  const handleCreateButtonClick = () => {
+    const newItem = {
+      id: list.length + 1,
+      label: `${name} ${surname}`,
+      value: `${name}_${surname}`,
+    };
+
+    setList([...list, newItem]);
+
+    emptyInputs();
+    disableAllButtons();
+  };
+
+  const handdleUpdateButtonClick = () => {};
+  const handleDeleteButtonClick = () => {};
+
+  const disableAllButtons = () => {
+    setCanUpdate(false);
+    setCanDelete(false);
+    setCanCreate(false);
+  };
+
+  const enableAllButtons = () => {
+    setCanUpdate(true);
+    setCanDelete(true);
+    setCanCreate(true);
+  };
+
+  const emptyInputs = () => {
+    setName("");
+    setSurName("");
   };
 
   return (
@@ -44,12 +74,7 @@ function Form() {
         <Input className="grow" />
       </div>
       <div className="mt-4 columns-2 gap-8">
-        <Select multiple className="grow">
-          <option>Polar Bear</option>
-          <option>Black Bear</option>
-          <option>Brown Bear</option>
-          <option>Grizzly Bear</option>
-        </Select>
+        <Select multiple className="grow" options={list} />
         <div className="flex flex-col items-end">
           <div className="flex justify-between w-full">
             <Label className={styles.label}>Name:</Label>
@@ -72,7 +97,11 @@ function Form() {
         </div>
       </div>
       <div className="flex justify-start gap-4 mt-4">
-        <Button disabled={!canCreate} color="#6ee7b7">
+        <Button
+          disabled={!canCreate}
+          color="#6ee7b7"
+          onClick={handleCreateButtonClick}
+        >
           Create
         </Button>
         <Button disabled={!canUpdate} color="#fce689">
