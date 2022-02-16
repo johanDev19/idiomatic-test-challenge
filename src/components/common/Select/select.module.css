@@ -1,0 +1,15 @@
+.select {
+  height: 100%;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  width: 100%;
+}
+
+.select option {
+  width: 100%;
+  padding: 5px 12px;
+}
+
+.select option:hover {
+  background-color: #93c5fd;
+}
