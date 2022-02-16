@@ -6,7 +6,7 @@ import styles from "./form.module.css";
 function Form() {
   return (
     <Card className={styles.formContainer}>
-      <div>
+      <div className="flex">
         <Label>Filter prefix:</Label>
         <Input />
       </div>
