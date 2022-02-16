@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  max-width: 500px;
+  max-width: 550px;
   padding: 20px;
   margin-right: auto;
   margin-left: auto;
@@ -8,4 +8,5 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: content-box;
 }

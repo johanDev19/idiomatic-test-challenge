@@ -1,4 +1,7 @@
 .formContainer {
-  width: 100%;
   border-radius: 5px;
+}
+
+.label {
+  min-width: 80px;
 }
