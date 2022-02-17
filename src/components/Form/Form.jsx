@@ -118,7 +118,10 @@ function Form() {
     }
 
     const newList = list.filter((item) => {
-      if (item.label.includes(value)) {
+      const itemSplit = item.label.split(" ");
+      const itemSurName = itemSplit[1];
+
+      if (itemSurName.includes(value)) {
         return item;
       }
     });
