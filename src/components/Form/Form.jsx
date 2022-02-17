@@ -8,6 +8,10 @@ import Input from "../common/Input";
 import Label from "../common/Label";
 import Select from "../common/Select";
 import styles from "./form.module.css";
+import {
+  getLocalStoreValue,
+  setLocalStoreValue,
+} from "../../utils/helper-function";
 
 const NAME = "name";
 const SURNAME = "surname";
@@ -31,6 +35,11 @@ function Form() {
     }
   }, [name]);
 
+  useEffect(() => {
+    const listLocalStorage = getLocalStoreValue("list") || [];
+    updateList(listLocalStorage);
+  }, []);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === NAME) {
@@ -49,6 +58,7 @@ function Form() {
 
     updateList([...list, newItem]);
     emptyInputs();
+    setOptionSelected();
   };
 
   const handdleUpdateButtonClick = () => {
@@ -86,8 +96,8 @@ function Form() {
 
   const handleSelectChange = (event) => {
     event.preventDefault();
-    const { value } = event.target;
-    const option = list.find((item) => item.value === value);
+    const { selectedOptions } = event.target;
+    const option = list.find((item) => item.id === selectedOptions[0].id);
     const optionSplit = option.label.split(" ");
 
     const optionName = optionSplit[0];
@@ -136,6 +146,7 @@ function Form() {
   const updateList = (options) => {
     setListFiltered(options);
     setList(options);
+    setLocalStoreValue("list", options);
   };
 
   return (

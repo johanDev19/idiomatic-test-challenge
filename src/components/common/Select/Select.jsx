@@ -10,7 +10,7 @@ function Select({ className, options, onChange, name }) {
       onChange={onChange}
     >
       {options.map((option) => (
-        <option key={option.id} value={option.value}>
+        <option key={option.id} id={option.id} value={option.value}>
           {option.label}
         </option>
       ))}
