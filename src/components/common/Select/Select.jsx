@@ -1,11 +1,13 @@
 import classNames from "classnames";
 import styles from "./select.module.css";
 
-function Select({ className, multiple, options }) {
+function Select({ className, options, onChange, name }) {
   return (
     <select
-      multiple={multiple}
+      name={name}
+      size={options.length > 2 ? options.length : 5}
       className={classNames(styles.select, className)}
+      onChange={onChange}
     >
       {options.map((option) => (
         <option key={option.id} value={option.value}>

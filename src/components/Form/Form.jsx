@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 
 import Button from "../common/Button";
@@ -18,17 +18,20 @@ function Form() {
   const [name, setName] = useState("");
   const [surname, setSurName] = useState("");
   const [list, setList] = useState([]);
+  const [optionSelected, setOptionSelected] = useState();
+
+  useEffect(() => {
+    if (name.length > 0) {
+      enableAllButtons();
+    } else {
+      disableAllButtons();
+    }
+  }, [name]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === NAME) {
       setName(value);
-
-      if (value.length > 0) {
-        enableAllButtons();
-      } else {
-        disableAllButtons();
-      }
     } else if (name === SURNAME) {
       setSurName(value);
     }
@@ -44,11 +47,44 @@ function Form() {
     setList([...list, newItem]);
 
     emptyInputs();
-    disableAllButtons();
   };
 
-  const handdleUpdateButtonClick = () => {};
+  const handdleUpdateButtonClick = () => {
+    if (!optionSelected) {
+      return;
+    }
+
+    const newList = list.map((item) => {
+      if (item.id === optionSelected.id) {
+        return {
+          ...item,
+          label: `${name} ${surname}`,
+          value: `${name}_${surname}`,
+        };
+      }
+      return item;
+    });
+
+    setList(newList);
+
+    emptyInputs();
+    setOptionSelected();
+  };
   const handleDeleteButtonClick = () => {};
+
+  const handleSelectChange = (event) => {
+    event.preventDefault();
+    const { value } = event.target;
+    const option = list.find((item) => item.value === value);
+    const optionSplit = option.label.split(" ");
+
+    const optionName = optionSplit[0];
+    const optionSurname = optionSplit[1];
+
+    setName(optionName);
+    setSurName(optionSurname);
+    setOptionSelected(option);
+  };
 
   const disableAllButtons = () => {
     setCanUpdate(false);
@@ -74,7 +110,12 @@ function Form() {
         <Input className="grow" />
       </div>
       <div className="mt-4 columns-2 gap-8">
-        <Select multiple className="grow" options={list} />
+        <Select
+          name="list"
+          className="grow"
+          options={list}
+          onChange={handleSelectChange}
+        />
         <div className="flex flex-col items-end">
           <div className="flex justify-between w-full">
             <Label className={styles.label}>Name:</Label>
@@ -104,7 +145,11 @@ function Form() {
         >
           Create
         </Button>
-        <Button disabled={!canUpdate} color="#fce689">
+        <Button
+          disabled={!canUpdate}
+          color="#fce689"
+          onClick={handdleUpdateButtonClick}
+        >
           Update
         </Button>
         <Button disabled={!canDelete} color="#f9a6a5">
