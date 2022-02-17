@@ -70,7 +70,18 @@ function Form() {
     emptyInputs();
     setOptionSelected();
   };
-  const handleDeleteButtonClick = () => {};
+  const handleDeleteButtonClick = () => {
+    if (!optionSelected) {
+      return;
+    }
+
+    const newList = list.filter((item) => item.id !== optionSelected.id);
+
+    setList(newList);
+
+    emptyInputs();
+    setOptionSelected();
+  };
 
   const handleSelectChange = (event) => {
     event.preventDefault();
@@ -152,7 +163,11 @@ function Form() {
         >
           Update
         </Button>
-        <Button disabled={!canDelete} color="#f9a6a5">
+        <Button
+          disabled={!canDelete}
+          color="#f9a6a5"
+          onClick={handleDeleteButtonClick}
+        >
           Delete
         </Button>
       </div>
