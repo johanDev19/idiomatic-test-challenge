@@ -19,21 +19,12 @@ const SURNAME = "surname";
 function Form() {
   const [canUpdate, setCanUpdate] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
-  const [canCreate, setCanCreate] = useState(false);
   const [name, setName] = useState("");
   const [surname, setSurName] = useState("");
   const [list, setList] = useState([]);
   const [listFiltered, setListFiltered] = useState([]);
   const [optionSelected, setOptionSelected] = useState();
   const [filter, setFilter] = useState("");
-
-  useEffect(() => {
-    if (name.length > 0) {
-      enableAllButtons();
-    } else {
-      disableAllButtons();
-    }
-  }, [name]);
 
   useEffect(() => {
     const listLocalStorage = getLocalStoreValue("list") || [];
@@ -50,6 +41,10 @@ function Form() {
   };
 
   const handleCreateButtonClick = () => {
+    if (name.length === 0 || surname.length === 0) {
+      return;
+    }
+
     const newItem = {
       id: uuidv4(),
       label: `${name} ${surname}`,
@@ -106,6 +101,7 @@ function Form() {
     setName(optionName);
     setSurName(optionSurname);
     setOptionSelected(option);
+    enableUpdateAndDeleteButtons();
   };
 
   const handleFilterChange = (event) => {
@@ -129,16 +125,9 @@ function Form() {
     setListFiltered(newList);
   };
 
-  const disableAllButtons = () => {
-    setCanUpdate(false);
-    setCanDelete(false);
-    setCanCreate(false);
-  };
-
-  const enableAllButtons = () => {
+  const enableUpdateAndDeleteButtons = () => {
     setCanUpdate(true);
     setCanDelete(true);
-    setCanCreate(true);
   };
 
   const emptyInputs = () => {
@@ -154,7 +143,7 @@ function Form() {
 
   return (
     <Card className={classNames(styles.formContainer, "shadow-md")}>
-      <div className="flex grow">
+      <div className="flex grow items-center">
         <Label className="mr-3">Filter prefix:</Label>
         <Input
           className="grow"
@@ -171,7 +160,7 @@ function Form() {
           onChange={handleSelectChange}
         />
         <div className="flex flex-col items-end">
-          <div className="flex justify-between w-full">
+          <div className="flex justify-between w-full items-center">
             <Label className={styles.label}>Name:</Label>
             <Input
               className="w-full"
@@ -180,7 +169,7 @@ function Form() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="flex mt-2 w-full justify-between">
+          <div className="flex mt-2 w-full justify-between items-center">
             <Label className={classNames(styles.label)}>Surname:</Label>
             <Input
               className="w-full"
@@ -192,11 +181,7 @@ function Form() {
         </div>
       </div>
       <div className="flex justify-start gap-4 mt-4">
-        <Button
-          disabled={!canCreate}
-          color="#6ee7b7"
-          onClick={handleCreateButtonClick}
-        >
+        <Button color="#6ee7b7" onClick={handleCreateButtonClick}>
           Create
         </Button>
         <Button
