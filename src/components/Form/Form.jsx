@@ -19,7 +19,9 @@ function Form() {
   const [name, setName] = useState("");
   const [surname, setSurName] = useState("");
   const [list, setList] = useState([]);
+  const [listFiltered, setListFiltered] = useState([]);
   const [optionSelected, setOptionSelected] = useState();
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     if (name.length > 0) {
@@ -45,8 +47,7 @@ function Form() {
       value: `${name}_${surname}`,
     };
 
-    setList([...list, newItem]);
-
+    updateList([...list, newItem]);
     emptyInputs();
   };
 
@@ -66,7 +67,7 @@ function Form() {
       return item;
     });
 
-    setList(newList);
+    updateList(newList);
 
     emptyInputs();
     setOptionSelected();
@@ -77,8 +78,7 @@ function Form() {
     }
 
     const newList = list.filter((item) => item.id !== optionSelected.id);
-
-    setList(newList);
+    updateList(newList);
 
     emptyInputs();
     setOptionSelected();
@@ -98,6 +98,24 @@ function Form() {
     setOptionSelected(option);
   };
 
+  const handleFilterChange = (event) => {
+    const value = event.target.value;
+    setFilter(value);
+
+    if (value.length === 0) {
+      setListFiltered(list);
+      return;
+    }
+
+    const newList = list.filter((item) => {
+      if (item.label.includes(value)) {
+        return item;
+      }
+    });
+
+    setListFiltered(newList);
+  };
+
   const disableAllButtons = () => {
     setCanUpdate(false);
     setCanDelete(false);
@@ -115,17 +133,27 @@ function Form() {
     setSurName("");
   };
 
+  const updateList = (options) => {
+    setListFiltered(options);
+    setList(options);
+  };
+
   return (
     <Card className={classNames(styles.formContainer, "shadow-md")}>
       <div className="flex grow">
         <Label className="mr-3">Filter prefix:</Label>
-        <Input className="grow" />
+        <Input
+          className="grow"
+          name="filter"
+          value={filter}
+          onChange={handleFilterChange}
+        />
       </div>
       <div className="mt-4 columns-2 gap-8">
         <Select
           name="list"
           className="grow"
-          options={list}
+          options={listFiltered}
           onChange={handleSelectChange}
         />
         <div className="flex flex-col items-end">
