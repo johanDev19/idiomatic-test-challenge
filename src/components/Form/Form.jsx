@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import classNames from "classnames";
+import { v4 as uuidv4 } from "uuid";
 
 import Button from "../common/Button";
 import Card from "../common/Card";
@@ -39,7 +40,7 @@ function Form() {
 
   const handleCreateButtonClick = () => {
     const newItem = {
-      id: list.length + 1,
+      id: uuidv4(),
       label: `${name} ${surname}`,
       value: `${name}_${surname}`,
     };
