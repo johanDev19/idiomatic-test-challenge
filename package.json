@@ -1,7 +1,7 @@
 {
   "name": "idiomatic-test",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -24,6 +24,6 @@
     "vite": "^2.8.0"
   },
   "main": "index.js",
-  "author": "johan guzman <johan.dev19@gmail.com>",
+  "author": "johan guzman <johan_ing1@hotmail.com>",
   "license": "MIT"
 }
